@@ -1227,6 +1227,111 @@ h3 {
   align-self: flex-start;
 }
 
+.form__error {
+  background: rgba(215, 38, 61, 0.15);
+  border: 1px solid rgba(215, 38, 61, 0.4);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  color: rgba(246, 244, 239, 0.9);
+}
+
+.form__error a {
+  color: var(--gold);
+  text-decoration: underline;
+}
+
+/* Submit button loading state */
+
+.btn__spinner {
+  display: none;
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(246, 244, 239, 0.35);
+  border-top-color: var(--paper);
+  border-radius: 50%;
+  animation: btn-spin 0.7s linear infinite;
+}
+
+.btn.is-loading {
+  cursor: default;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.btn.is-loading .btn__label {
+  display: none;
+}
+
+.btn.is-loading .btn__spinner {
+  display: inline-block;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success state */
+
+.form-wrap {
+  position: relative;
+}
+
+.form-success {
+  text-align: center;
+  padding: var(--space-lg) var(--space-md);
+  border: 2px dashed rgba(246, 244, 239, 0.3);
+  border-radius: 10px;
+}
+
+.form-success h3 {
+  margin-top: var(--space-sm);
+  color: var(--paper);
+}
+
+.form-success p {
+  margin-top: 0.6rem;
+  color: rgba(246, 244, 239, 0.75);
+  max-width: 38ch;
+  margin-inline: auto;
+}
+
+.success-check {
+  margin-inline: auto;
+}
+
+.success-check__circle {
+  stroke: var(--gold);
+  stroke-width: 2;
+  stroke-dasharray: 145;
+  stroke-dashoffset: 145;
+  animation: draw-circle 0.5s ease forwards;
+}
+
+.success-check__mark {
+  stroke: var(--gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: draw-check 0.3s ease forwards 0.45s;
+}
+
+@keyframes draw-circle {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* ==========================================================================
    Footer
    ========================================================================== */

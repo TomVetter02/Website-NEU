@@ -311,7 +311,7 @@
         <dl class="contact__info">
           <div>
             <dt>E-Mail</dt>
-            <dd><a href="mailto:tom.vetter02@yahoo.com">tom.vetter02@yahoo.com</a></dd>
+            <dd><a href="mailto:tvetter@vetterwebdesign.de">tvetter@vetterwebdesign.de</a></dd>
           </div>
           <div>
             <dt>Telefon</dt>
@@ -323,21 +323,35 @@
           </div>
         </dl>
       </div>
-      <form class="form reveal" action="mailto:tom.vetter02@yahoo.com" method="post" enctype="text/plain">
-        <div class="form__field">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="Name" placeholder="Ihr Name" required />
+      <div class="form-wrap reveal">
+        <form class="form" id="contact-form">
+          <div class="form__field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Ihr Name" required />
+          </div>
+          <div class="form__field">
+            <label for="email">E-Mail</label>
+            <input type="email" id="email" name="email" placeholder="ihre@email.de" required />
+          </div>
+          <div class="form__field">
+            <label for="message">Nachricht</label>
+            <textarea id="message" name="message" rows="4" placeholder="Worum geht es in Ihrem Projekt?" required></textarea>
+          </div>
+          <p class="form__error" id="form-error" role="alert" hidden>Da ist etwas schiefgelaufen. Schreiben Sie uns gerne direkt an <a href="mailto:tvetter@vetterwebdesign.de">tvetter@vetterwebdesign.de</a>.</p>
+          <button type="submit" class="btn btn--on-dark" id="form-submit">
+            <span class="btn__label">Nachricht senden</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+        <div class="form-success" id="form-success" role="status" aria-live="polite" hidden>
+          <svg class="success-check" viewBox="0 0 52 52" width="56" height="56" aria-hidden="true">
+            <circle class="success-check__circle" cx="26" cy="26" r="23" fill="none" />
+            <path class="success-check__mark" fill="none" d="M14 27l7 7 16-16" />
+          </svg>
+          <h3>Nachricht gesendet.</h3>
+          <p>Danke! Sie erhalten in Kürze eine Bestätigung per E-Mail — wir melden uns innerhalb von zwei Werktagen persönlich zurück.</p>
         </div>
-        <div class="form__field">
-          <label for="email">E-Mail</label>
-          <input type="email" id="email" name="E-Mail" placeholder="ihre@email.de" required />
-        </div>
-        <div class="form__field">
-          <label for="message">Nachricht</label>
-          <textarea id="message" name="Nachricht" rows="4" placeholder="Worum geht es in Ihrem Projekt?" required></textarea>
-        </div>
-        <button type="submit" class="btn btn--on-dark">Nachricht senden</button>
-      </form>
+      </div>
     </div>
   </section>
 
@@ -382,6 +396,7 @@
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script src="assets/js/main.js"></script>
 </body>
 </html>

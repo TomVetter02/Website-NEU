@@ -1,6 +1,18 @@
 (function () {
   "use strict";
 
+  // EmailJS-Zugangsdaten aus dem EmailJS-Dashboard (siehe Setup-Anleitung).
+  // Ohne echte Werte schlägt der Versand fehl und die Fehlermeldung im
+  // Formular greift als Fallback (mailto-Link).
+  var EMAILJS_PUBLIC_KEY = "DEIN_PUBLIC_KEY";
+  var EMAILJS_SERVICE_ID = "DEIN_SERVICE_ID";
+  var EMAILJS_TEMPLATE_ADMIN = "DEIN_TEMPLATE_ID_BENACHRICHTIGUNG";
+  var EMAILJS_TEMPLATE_AUTOREPLY = "DEIN_TEMPLATE_ID_BESTAETIGUNG";
+
+  if (window.emailjs) {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
+
   var header = document.getElementById("site-header");
   var navToggle = document.getElementById("nav-toggle");
   var navLinks = document.getElementById("nav-links");
@@ -59,6 +71,37 @@
   } else {
     revealEls.forEach(function (el) {
       el.classList.add("is-visible");
+    });
+  }
+
+  // Contact form: send in-page via EmailJS, no page leave, with a success animation
+  var contactForm = document.getElementById("contact-form");
+
+  if (contactForm && window.emailjs) {
+    var submitBtn = document.getElementById("form-submit");
+    var errorEl = document.getElementById("form-error");
+    var successEl = document.getElementById("form-success");
+
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      submitBtn.classList.add("is-loading");
+      submitBtn.disabled = true;
+      errorEl.hidden = true;
+
+      Promise.all([
+        emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ADMIN, contactForm),
+        emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_AUTOREPLY, contactForm),
+      ])
+        .then(function () {
+          contactForm.hidden = true;
+          successEl.hidden = false;
+        })
+        .catch(function () {
+          submitBtn.classList.remove("is-loading");
+          submitBtn.disabled = false;
+          errorEl.hidden = false;
+        });
     });
   }
 })();

@@ -275,10 +275,21 @@ h3 {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(246, 244, 239, 0.88);
-  backdrop-filter: blur(10px);
   border-bottom: 2px solid var(--border);
   transition: padding 0.25s var(--ease);
+}
+
+/* Frosted background lives on a pseudo-element, not .site-header itself —
+   backdrop-filter on the header would otherwise create a containing block
+   for position:fixed descendants (like the mobile nav panel), confining it
+   to the header's own height instead of the full viewport. */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(246, 244, 239, 0.88);
+  backdrop-filter: blur(10px);
+  z-index: -1;
 }
 
 .site-header .container {

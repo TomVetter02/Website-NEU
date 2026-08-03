@@ -1509,9 +1509,9 @@ h3 {
     height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     overflow: visible;
-    padding-block: clamp(1.5rem, 6vw, 2.5rem);
+    padding-block: clamp(0.75rem, 4vw, 1.25rem) clamp(1.5rem, 6vw, 2.5rem);
   }
 
   .hero__intro,
@@ -1542,7 +1542,8 @@ h3 {
   }
 
   .hero__bottom {
-    margin-top: clamp(1.25rem, 4vw, 2rem);
+    margin-top: clamp(2rem, 6vw, 2.75rem);
+    padding-top: 2.5rem;
     justify-content: center;
     text-align: center;
   }

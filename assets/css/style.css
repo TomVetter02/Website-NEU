@@ -544,6 +544,12 @@ h3 {
   text-align: right;
 }
 
+/* Mobile has its own headline text/wrapping; hidden by default, swapped
+   in for .hero__headline--desktop below the 1024px breakpoint. */
+.hero__headline--mobile {
+  display: none;
+}
+
 .hero__bottom {
   flex: 0 0 auto;
   display: flex;
@@ -1511,6 +1517,19 @@ h3 {
     text-align: left;
   }
 
+  .hero__headline--desktop {
+    display: none;
+  }
+
+  .hero__headline--mobile {
+    display: block;
+  }
+
+  .hero__headline--mobile em {
+    font-style: normal;
+    color: var(--accent-orange);
+  }
+
   .hero__bottom {
     margin-top: clamp(1.25rem, 4vw, 2rem);
     justify-content: center;
@@ -1518,7 +1537,14 @@ h3 {
   }
 
   .hero__actions {
+    flex-wrap: nowrap;
     justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .hero__actions .btn {
+    padding: 0.65rem 1.1rem;
+    font-size: 0.7rem;
   }
 
   .hero__meta {

@@ -1491,16 +1491,27 @@ h3 {
      scroll-pin (see main.js) is desktop-only; below 1024px it never
      activates, so .hero-pin-track/.hero-pin just need to behave like a
      normal, non-sticky section again. */
+  /* Fills exactly the remaining screen below the header, so the hero is
+     the only thing visible on load — nothing from the next section peeks
+     in. 74px approximates the header's own height (padding + wordmark). */
   .hero-pin-track {
     height: auto;
+    min-height: calc(100vh - 74px);
+    min-height: calc(100dvh - 74px);
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
   }
 
   .hero-pin {
     position: static;
+    flex: 1 1 auto;
     height: auto;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     overflow: visible;
-    padding-block: clamp(2rem, 6vw, 3rem) clamp(1.5rem, 5vw, 2.5rem);
+    padding-block: clamp(1.5rem, 6vw, 2.5rem);
   }
 
   .hero__intro,

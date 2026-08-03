@@ -1480,52 +1480,40 @@ h3 {
     padding: var(--space-md);
   }
 
-  /* Scroll-pin grow effect is desktop-only: below 1024px the stacked
-     hero content can be taller than the viewport, so the pin releases
-     back to a normal static section with the circle at a fixed size. */
-  .hero-pin-track {
-    height: auto;
+  /* Mobile hero: no intro block — just headline above circle, centered.
+     The scroll-pin stays active (see main.js), just with a smaller circle
+     range and a plain fade for the headline instead of the desktop's
+     side-exit. .hero-portrait's clamp size below is only the pre-JS
+     fallback; main.js drives the actual size during the animation. */
+  .hero__intro {
+    display: none;
   }
 
-  .hero-pin {
-    position: static;
-    height: auto;
-    display: block;
-    overflow: visible;
-    padding-block: clamp(2rem, 6vw, 3rem) clamp(1.5rem, 5vw, 2.5rem);
+  /* Shorter scroll track than desktop — the mobile sequence (headline
+     fade + circle grow + word cycle) is simpler and doesn't need as much
+     scroll distance to play out comfortably. */
+  .hero-pin-track {
+    height: 220vh;
   }
 
   .hero-portrait .portrait__circle {
-    width: clamp(220px, 46vw, 320px) !important;
-    height: clamp(220px, 46vw, 320px) !important;
-  }
-
-  .hero-circle__word,
-  .hero-circle__btn {
-    display: none;
+    width: clamp(200px, 55vw, 280px);
+    height: clamp(200px, 55vw, 280px);
   }
 
   .hero__top {
     grid-template-columns: 1fr;
+    align-content: center;
     text-align: center;
   }
 
-  .hero__intro {
+  .hero__headline {
     order: 1;
-  }
-
-  .hero__intro p {
-    margin-inline: auto;
+    text-align: center;
   }
 
   .hero-portrait {
     order: 2;
-    margin-top: clamp(1.25rem, 4vw, 1.75rem);
-  }
-
-  .hero__headline {
-    order: 3;
-    text-align: center;
     margin-top: clamp(1.25rem, 4vw, 1.75rem);
   }
 

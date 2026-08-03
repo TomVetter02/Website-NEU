@@ -1480,62 +1480,35 @@ h3 {
     padding: var(--space-md);
   }
 
-  /* Mobile hero: no intro block — just headline above circle, centered.
-     The scroll-pin stays active (see main.js), just with a smaller circle
-     range and a plain fade for the headline instead of the desktop's
-     side-exit. .hero-portrait's clamp size below is only the pre-JS
-     fallback; main.js drives the actual size during the animation. */
-  .hero__intro {
+  /* Mobile hero: static, no animation. No intro block, no circle — just
+     the left-aligned headline and the actions/stats bar below it. The
+     scroll-pin (see main.js) is desktop-only; below 1024px it never
+     activates, so .hero-pin-track/.hero-pin just need to behave like a
+     normal, non-sticky section again. */
+  .hero-pin-track {
+    height: auto;
+  }
+
+  .hero-pin {
+    position: static;
+    height: auto;
+    display: block;
+    overflow: visible;
+    padding-block: clamp(2rem, 6vw, 3rem) clamp(1.5rem, 5vw, 2.5rem);
+  }
+
+  .hero__intro,
+  .hero-portrait {
     display: none;
   }
 
-  /* Shorter scroll track than desktop — the mobile sequence (headline
-     fade + circle grow + word cycle) is simpler and doesn't need as much
-     scroll distance to play out comfortably. */
-  .hero-pin-track {
-    height: 220vh;
-  }
-
-  /* The headline is NOT clipped — it takes its own natural height and
-     just fades out via opacity. Only .hero-portrait (the circle's own
-     box) is a flex:1 clip region for whatever space is left after the
-     headline and .hero__bottom, so the growing circle can never push
-     into either — it just gets cropped by its own box, same principle
-     as the desktop clip, but scoped one level deeper. */
   .hero__top {
-    display: flex;
-    flex-direction: column;
-    overflow: visible;
-    text-align: center;
+    display: block;
+    text-align: left;
   }
 
   .hero__headline {
-    order: 1;
-    flex: 0 0 auto;
-    text-align: center;
-  }
-
-  .hero-portrait {
-    order: 2;
-    flex: 1 1 auto;
-    min-height: 130px;
-    height: auto;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: clamp(1rem, 4vw, 1.5rem);
-  }
-
-  .hero-portrait .portrait__circle {
-    position: relative;
-    left: auto;
-    top: auto;
-    transform: none;
-    width: clamp(200px, 55vw, 280px);
-    height: clamp(200px, 55vw, 280px);
-    max-width: 100%;
-    max-height: 100%;
+    text-align: left;
   }
 
   .hero__bottom {

@@ -76,11 +76,10 @@
 
   // Hero scroll-pin: the circle starts at its resting size, then grows as
   // the hero stays pinned to the top of the viewport, until it has grown
-  // to its full size — after that the page scrolls normally again. Runs
-  // on every viewport width; only the exit animation for the surrounding
-  // text and the circle's size range differ below 1024px (see the
-  // matching breakpoint in style.css: no intro block on mobile, headline
-  // sits centered above the circle instead of beside it).
+  // to its full size — after that the page scrolls normally again.
+  // Desktop only (≥1025px) — below that the mobile hero is a plain,
+  // unanimated headline + actions bar (see the matching 1024px
+  // breakpoint in style.css).
   var heroTrack = document.getElementById("hero-pin-track");
   var heroPin = document.getElementById("hero-pin");
   var heroCircle = document.getElementById("hero-circle");
@@ -89,17 +88,13 @@
     var HERO_CIRCLE_MIN = 300;
     var HERO_CIRCLE_MAX_VW = 0.62;
     var HERO_CIRCLE_MAX_CAP = 980;
-    var HERO_CIRCLE_MIN_MOBILE = 220;
-    var HERO_CIRCLE_MAX_VW_MOBILE = 1.1;
-    var HERO_CIRCLE_MAX_CAP_MOBILE = 460;
-    var HERO_EXIT_END = 0.75; // desktop: blocks are fully gone by 75% of the scroll
+    var HERO_EXIT_END = 0.75; // blocks are fully gone by 75% of the scroll
     var HERO_EXIT_X = 460;
     var HERO_EXIT_Y = 170;
     var HERO_EXIT_ROT = 11;
-    var HERO_EXIT_END_MOBILE = 0.4; // mobile: headline fade is quick, out of the way early
     var HERO_BUTTON_START = 0.9; // last word holds, then the button appears
     var HERO_WORD_SHIFT = 30;
-    var heroMobileQuery = window.matchMedia("(max-width: 1024px)");
+    var heroDesktopQuery = window.matchMedia("(min-width: 1025px)");
     var heroWords = Array.prototype.slice.call(
       heroCircle.querySelectorAll(".hero-circle__word")
     );
@@ -107,14 +102,7 @@
     var heroIntro = heroPin.querySelector(".hero__intro");
     var heroHeadline = heroPin.querySelector(".hero__headline");
 
-    var heroCircleMin = function () {
-      return heroMobileQuery.matches ? HERO_CIRCLE_MIN_MOBILE : HERO_CIRCLE_MIN;
-    };
-
     var heroMaxSize = function () {
-      if (heroMobileQuery.matches) {
-        return Math.min(window.innerWidth * HERO_CIRCLE_MAX_VW_MOBILE, HERO_CIRCLE_MAX_CAP_MOBILE);
-      }
       return Math.min(window.innerWidth * HERO_CIRCLE_MAX_VW, HERO_CIRCLE_MAX_CAP);
     };
 
@@ -190,23 +178,10 @@
       }
     };
 
-    // Desktop: intro block slides diagonally down-left, headline slides
-    // down-right, both fading out — fully gone by HERO_EXIT_END so the
-    // circle owns the full stage for the last stretch of its growth.
-    // Mobile: there is no intro block; the centered headline just fades
-    // and drifts up out of the way, quickly, so the circle gets most of
-    // the scroll range to itself.
+    // Intro block slides diagonally down-left, headline slides down-right,
+    // both fading out — fully gone by HERO_EXIT_END so the circle owns the
+    // full stage for the last stretch of its growth.
     var updateHeroBlocks = function (progress) {
-      if (heroMobileQuery.matches) {
-        var mt = Math.min(1, progress / HERO_EXIT_END_MOBILE);
-        if (heroHeadline) {
-          heroHeadline.style.transform = "translateY(" + -40 * mt + "px)";
-          heroHeadline.style.opacity = 1 - mt;
-          heroHeadline.style.pointerEvents = mt >= 1 ? "none" : "";
-        }
-        return;
-      }
-
       var t = Math.min(1, progress / HERO_EXIT_END);
       var opacity = 1 - t;
 
@@ -245,8 +220,7 @@
       // on .portrait__circle in CSS) — .hero__top clips its own overflow,
       // so once the circle reaches that box's top or bottom edge, the
       // excess simply disappears instead of pushing anything around.
-      var minSize = heroCircleMin();
-      var size = minSize + (heroMaxSize() - minSize) * progress;
+      var size = HERO_CIRCLE_MIN + (heroMaxSize() - HERO_CIRCLE_MIN) * progress;
       heroCircle.style.width = size + "px";
       heroCircle.style.height = size + "px";
 
@@ -265,9 +239,13 @@
     };
 
     var refreshHeroPin = function () {
+      if (!heroDesktopQuery.matches) {
+        teardownHeroPin();
+        return;
+      }
       if (prefersReducedMotion) {
         // Keep the original static layout: no pin, no growth, headline and
-        // intro (desktop) stay put and fully visible.
+        // intro stay put and fully visible.
         teardownHeroPin();
         return;
       }
@@ -278,7 +256,7 @@
     window.addEventListener(
       "scroll",
       function () {
-        if (prefersReducedMotion) return;
+        if (!heroDesktopQuery.matches || prefersReducedMotion) return;
         window.requestAnimationFrame(updateHeroCircle);
       },
       { passive: true }
@@ -286,10 +264,10 @@
 
     window.addEventListener("resize", refreshHeroPin);
 
-    if (heroMobileQuery.addEventListener) {
-      heroMobileQuery.addEventListener("change", refreshHeroPin);
+    if (heroDesktopQuery.addEventListener) {
+      heroDesktopQuery.addEventListener("change", refreshHeroPin);
     } else {
-      heroMobileQuery.addListener(refreshHeroPin);
+      heroDesktopQuery.addListener(refreshHeroPin);
     }
 
     refreshHeroPin();

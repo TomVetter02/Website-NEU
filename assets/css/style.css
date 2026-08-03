@@ -588,6 +588,30 @@ h3 {
   text-transform: none;
 }
 
+/* Mobile-only social row below .hero__meta — hidden on desktop, see the
+   1024px breakpoint for the mobile layout. */
+.hero-social {
+  display: none;
+}
+
+.hero-social__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--ink);
+  transition: border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.hero-social__link:hover,
+.hero-social__link:focus-visible {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
 /* ==========================================================================
    Problem / Lösung
    ========================================================================== */
@@ -1561,6 +1585,14 @@ h3 {
 
   .hero__meta {
     justify-content: center;
+  }
+
+  .hero-social {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: var(--space-md);
   }
 
   .service-row {

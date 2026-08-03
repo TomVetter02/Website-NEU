@@ -1471,6 +1471,15 @@ h3 {
     gap: var(--space-md);
   }
 
+  /* Each list turns into its own card, matching .work-card, instead of
+     relying on hairline dividers between stacked rows. */
+  .compare__col {
+    background: rgba(246, 244, 239, 0.05);
+    border: 1px solid var(--border-dark);
+    border-radius: 14px;
+    padding: var(--space-md);
+  }
+
   /* Scroll-pin grow effect is desktop-only: below 1024px the stacked
      hero content can be taller than the viewport, so the pin releases
      back to a normal static section with the circle at a fixed size. */
@@ -1483,12 +1492,12 @@ h3 {
     height: auto;
     display: block;
     overflow: visible;
-    padding-block: clamp(2.5rem, 6vw, 4rem) var(--space-lg);
+    padding-block: clamp(2rem, 6vw, 3rem) clamp(1.5rem, 5vw, 2.5rem);
   }
 
   .hero-portrait .portrait__circle {
-    width: clamp(240px, 50vw, 360px) !important;
-    height: clamp(240px, 50vw, 360px) !important;
+    width: clamp(220px, 46vw, 320px) !important;
+    height: clamp(220px, 46vw, 320px) !important;
   }
 
   .hero-circle__word,
@@ -1511,16 +1520,17 @@ h3 {
 
   .hero-portrait {
     order: 2;
-    margin-top: var(--space-md);
+    margin-top: clamp(1.25rem, 4vw, 1.75rem);
   }
 
   .hero__headline {
     order: 3;
     text-align: center;
-    margin-top: var(--space-md);
+    margin-top: clamp(1.25rem, 4vw, 1.75rem);
   }
 
   .hero__bottom {
+    margin-top: clamp(1.25rem, 4vw, 2rem);
     justify-content: center;
     text-align: center;
   }
@@ -1536,10 +1546,20 @@ h3 {
   .service-row {
     grid-template-columns: 1fr;
     gap: var(--space-sm);
+    background: var(--paper-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(21, 19, 15, 0.06);
+    padding: var(--space-md);
+  }
+
+  .service-row + .service-row {
+    margin-top: var(--space-sm);
   }
 
   .about .container {
     grid-template-columns: 1fr;
+    gap: var(--space-lg);
   }
 
   .about-portrait {
@@ -1550,6 +1570,19 @@ h3 {
 
   .contact .container {
     grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .contact__info,
+  .form-wrap {
+    background: rgba(246, 244, 239, 0.05);
+    border: 1px solid var(--border-dark);
+    border-radius: 14px;
+    padding: var(--space-md);
+  }
+
+  .contact__info {
+    margin-top: var(--space-md);
   }
 
   .footer-grid {
@@ -1584,6 +1617,13 @@ h3 {
     display: none;
   }
 
+  /* Tighter, phone-appropriate section rhythm instead of the desktop
+     9rem block padding — also wins over .problem's own override since
+     it's declared later in the cascade at equal specificity. */
+  .section {
+    padding-block: clamp(2.75rem, 9vw, 4rem);
+  }
+
   .work-grid,
   .work-grid--compact,
   .pricing-grid {
@@ -1591,15 +1631,37 @@ h3 {
   }
 
   .pricing-grid {
-    gap: var(--space-lg);
+    gap: var(--space-md);
   }
 
   .price-col__amount {
     font-size: 2.8rem;
   }
 
+  /* Cards, matching .work-card, instead of hairline-divided rows. */
+  .price-col {
+    background: var(--paper-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(21, 19, 15, 0.06);
+    padding: var(--space-md);
+  }
+
+  .price-col--featured {
+    border-color: var(--accent-orange);
+  }
+
   .process-step {
     grid-template-columns: 60px 1fr;
+    background: var(--paper-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(21, 19, 15, 0.06);
+    padding: var(--space-md);
+  }
+
+  .process-step + .process-step {
+    margin-top: var(--space-sm);
   }
 
   .footer-grid {
@@ -1616,9 +1678,5 @@ h3 {
 @media (max-width: 480px) {
   .footer-grid {
     grid-template-columns: 1fr;
-  }
-
-  .section {
-    padding-block: var(--space-lg);
   }
 }

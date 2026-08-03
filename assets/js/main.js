@@ -173,7 +173,6 @@
         heroBtn.style.opacity = "";
         heroBtn.style.transform = "";
         heroBtn.style.pointerEvents = "";
-        heroBtn.tabIndex = -1;
       }
     };
 

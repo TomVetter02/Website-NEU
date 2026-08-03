@@ -1587,12 +1587,17 @@ h3 {
     justify-content: center;
   }
 
+  /* Only the referral price stays visible on mobile, centered on its own. */
+  .hero__meta > div:nth-child(2),
+  .hero__meta > div:nth-child(3) {
+    display: none;
+  }
+
   .hero-social {
     display: flex;
     width: 100%;
     justify-content: center;
     gap: 0.75rem;
-    margin-top: var(--space-md);
   }
 
   .service-row {

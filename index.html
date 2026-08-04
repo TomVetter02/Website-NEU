@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="assets/css/style.css?v=32" />
+<link rel="stylesheet" href="assets/css/style.css?v=36" />
 </head>
 <body>
 <a class="skip-link" href="#main">Zum Inhalt springen</a>
@@ -39,27 +39,32 @@
 
   <!-- HERO -->
   <section class="hero" id="top">
-    <div class="hero-pin-track" id="hero-pin-track">
-      <div class="hero-pin" id="hero-pin">
+    <div class="hero-pin-track">
+      <div class="hero-pin">
         <div class="container">
           <div class="hero__top">
-            <div class="hero__intro">
+            <div class="hero__content">
               <span class="eyebrow">Webdesign · SEO · Wartung</span>
-              <p>Veraltet, langsam oder gar nicht vorhanden – eine schlechte Website kostet dich jeden Tag Anfragen. Ich baue dir eine, die gefunden wird.</p>
-              <a href="#leistungen" class="btn--link">Mehr erfahren</a>
+              <h1 class="hero__headline hero__headline--desktop">Deine Website<br />arbeitet gegen<br /><em>dich.</em></h1>
+              <h1 class="hero__headline hero__headline--mobile">Bereit für eine <em>neue</em> Webseite?</h1>
+              <p class="hero__lede">Veraltet, langsam oder gar nicht vorhanden – eine schlechte Website kostet dich jeden Tag Anfragen. Ich baue dir eine, die gefunden wird.</p>
             </div>
-            <div class="hero-portrait portrait">
-              <div class="portrait__circle" id="hero-circle">
-                <span class="hero-circle__word" aria-hidden="true">Bereit</span>
-                <span class="hero-circle__word" aria-hidden="true">für</span>
-                <span class="hero-circle__word" aria-hidden="true">Deine</span>
-                <span class="hero-circle__word" aria-hidden="true">neue</span>
-                <span class="hero-circle__word" aria-hidden="true">Webseite?</span>
-                <a href="#kontakt" class="btn hero-circle__btn" id="hero-circle-btn" tabindex="-1">Na klar, Keule!</a>
+            <div class="hero__preview">
+              <div class="hero-video-frame">
+                <div class="hero-video-frame__bar">
+                  <span></span><span></span><span></span>
+                  <em>vetterwebdesign.de</em>
+                </div>
+                <div class="hero-video-frame__stage">
+                  <video class="hero-video" id="hero-video" muted playsinline preload="auto">
+                    <source src="assets/video/hero-preview.mp4" type="video/mp4" />
+                  </video>
+                  <button type="button" class="hero-video__expand" id="hero-video-expand" aria-label="Video vergrößern">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3" /><path d="M21 8V5a2 2 0 0 0-2-2h-3" /><path d="M3 16v3a2 2 0 0 0 2 2h3" /><path d="M16 21h3a2 2 0 0 0 2-2v-3" /></svg>
+                  </button>
+                </div>
               </div>
             </div>
-            <h1 class="hero__headline hero__headline--desktop">Deine Website<br />arbeitet gegen<br />dich.</h1>
-            <h1 class="hero__headline hero__headline--mobile">Bereit für eine <em>neue</em> Webseite?</h1>
           </div>
           <div class="hero__bottom">
             <div class="hero__actions">
@@ -443,6 +448,6 @@
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="assets/js/main.js?v=21"></script>
+<script src="assets/js/main.js?v=23"></script>
 </body>
 </html>

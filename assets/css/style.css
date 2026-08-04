@@ -428,22 +428,12 @@ h3 {
   overflow: visible;
 }
 
-/* Pin track: extra scroll distance the circle-grow animation consumes.
-   The inner .hero-pin sticks for that distance, then releases to normal
-   scrolling once the track's height runs out (see updateHeroCircle() in
-   main.js). */
 .hero-pin-track {
   position: relative;
-  height: 340vh;
-  margin-bottom: clamp(2rem, 5vw, 4rem);
 }
 
 .hero-pin {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  display: flex;
-  overflow: hidden;
+  padding-block: clamp(3rem, 8vw, 6rem);
 }
 
 .hero-pin .container {
@@ -452,90 +442,25 @@ h3 {
   flex-direction: column;
 }
 
-/* Fills all space above .hero__bottom and clips its own overflow — the
-   circle grows evenly in every direction from its own center, and any
-   part that would reach past this box (top or bottom) simply disappears,
-   the same way the top of the circle is already clipped by .hero-pin. */
 .hero__top {
-  flex: 1 1 auto;
-  min-height: 0;
-  overflow: hidden;
   display: grid;
-  grid-template-columns: 1.15fr 1fr 0.85fr;
-  gap: var(--space-lg);
-  align-items: center;
+  grid-template-columns: 0.9fr 1.05fr;
+  gap: var(--space-xl);
+  align-items: start;
 }
 
-.hero__intro {
-  order: 3;
+.hero__content {
   position: relative;
-  z-index: 2;
-  transform-origin: top right;
-  will-change: transform, opacity;
 }
 
-.hero__intro p {
-  color: var(--ink-soft);
-  max-width: 34ch;
-}
-
-.hero__intro .btn--link {
-  margin-top: var(--space-md);
-}
-
-.hero-portrait {
-  order: 2;
-  height: clamp(300px, 36vw, 460px);
-  z-index: 0;
-}
-
-.hero-portrait .portrait__circle {
-  width: 300px;
-  height: 300px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  will-change: width, height;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-circle__word {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12%;
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: var(--hero-word-size, 2.2rem);
-  color: #dadada;
-  text-align: center;
-  white-space: nowrap;
-  opacity: 0;
-}
-
-/* Visual style comes from .btn (same as "Projekt starten") — this class
-   only positions it centered inside the circle for the fade/slide-in. */
-.hero-circle__btn {
-  position: absolute;
-  left: 50%;
-  top: 62%;
-  transform: translate(-50%, 14px);
-  opacity: 0;
-  pointer-events: none;
-  white-space: nowrap;
+/* Nudged down to roughly match the headline's own top (the eyebrow
+   above it, plus the headline's margin-top, take up this much space). */
+.hero__preview {
+  margin-top: 3rem;
 }
 
 .hero__headline {
-  order: 1;
   position: relative;
-  z-index: 2;
-  transform-origin: top left;
-  will-change: transform, opacity;
   font-family: var(--font-display);
   font-size: var(--step-hero);
   font-weight: 700;
@@ -544,17 +469,101 @@ h3 {
   text-align: left;
 }
 
-/* A bit smaller than the shared --step-hero size, desktop only — the
-   mobile headline is a different element (.hero__headline--mobile) and
-   keeps the full size. */
+/* Sized to its own clamp (not --step-hero) so the three manual line
+   breaks below each stay on their own line within the narrower text
+   column, instead of wrapping again into a 4th line. Desktop only —
+   the mobile headline is a different element (.hero__headline--mobile)
+   and keeps the shared --step-hero size. */
 .hero__headline--desktop {
-  font-size: calc(var(--step-hero) * 0.82);
+  margin-top: var(--space-sm);
+  font-size: clamp(2.6rem, 4vw, 4.5rem);
+}
+
+.hero__headline--desktop em {
+  font-style: normal;
+  color: var(--accent-orange);
 }
 
 /* Mobile has its own headline text/wrapping; hidden by default, swapped
    in for .hero__headline--desktop below the 1024px breakpoint. */
 .hero__headline--mobile {
   display: none;
+}
+
+.hero__lede {
+  margin-top: var(--space-md);
+  color: var(--ink-soft);
+  max-width: 42ch;
+}
+
+/* Browser-frame video preview, same visual language as the portfolio's
+   .device-preview. Desktop only — see the 1024px breakpoint. */
+.hero-video-frame {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(21, 19, 15, 0.14);
+}
+
+.hero-video-frame__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.6rem 0.9rem;
+  background: var(--ink);
+}
+
+.hero-video-frame__bar span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--stone-light);
+}
+
+.hero-video-frame__bar em {
+  margin-left: auto;
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: rgba(246, 244, 239, 0.55);
+  letter-spacing: 0.02em;
+}
+
+.hero-video-frame__stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+}
+
+.hero-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+}
+
+.hero-video__expand {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(21, 19, 15, 0.72);
+  backdrop-filter: blur(6px);
+  color: var(--paper);
+  cursor: pointer;
+  transition: background 0.2s var(--ease);
+}
+
+.hero-video__expand:hover {
+  background: rgba(21, 19, 15, 0.88);
 }
 
 .hero__bottom {
@@ -1506,6 +1515,17 @@ h3 {
    ========================================================================== */
 
 @media (min-width: 1025px) {
+  /* Matches .hero__top's 0.9fr/1.05fr text/video split exactly, so the
+     actions/stats bar lines up under the text column instead of
+     spanning the full width under the video too. */
+  .hero__bottom {
+    max-width: calc((100% - var(--space-xl)) * 0.9 / 1.95);
+    margin-top: var(--space-lg);
+    padding-top: 0;
+    border-top: none;
+    justify-content: flex-start;
+  }
+
   .section-head {
     max-width: 820px;
     margin-inline: auto;
@@ -1648,11 +1668,9 @@ h3 {
     padding: var(--space-md);
   }
 
-  /* Mobile hero: static, no animation. No intro block, no circle — just
-     the left-aligned headline and the actions/stats bar below it. The
-     scroll-pin (see main.js) is desktop-only; below 1024px it never
-     activates, so .hero-pin-track/.hero-pin just need to behave like a
-     normal, non-sticky section again. */
+  /* Mobile hero: static, just the left-aligned headline and the
+     actions/stats bar below it. The lede paragraph and video preview
+     are desktop-only (see .hero__top below). */
   /* Fills exactly the remaining screen below the header, so the hero is
      the only thing visible on load — nothing from the next section peeks
      in. 74px approximates the header's own height (padding + wordmark). */
@@ -1676,18 +1694,13 @@ h3 {
     padding-block: clamp(0.75rem, 4vw, 1.25rem) clamp(2.5rem, 10vw, 4rem);
   }
 
-  .hero__intro,
-  .hero-portrait {
+  .hero__lede,
+  .hero__preview {
     display: none;
   }
 
   .hero__top {
     display: block;
-    text-align: left;
-  }
-
-  .hero__headline {
-    text-align: left;
   }
 
   .hero__headline--desktop {

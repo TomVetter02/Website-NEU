@@ -74,204 +74,53 @@
     });
   }
 
-  // Hero scroll-pin: the circle starts at its resting size, then grows as
-  // the hero stays pinned to the top of the viewport, until it has grown
-  // to its full size — after that the page scrolls normally again.
-  // Desktop only (≥1025px) — below that the mobile hero is a plain,
-  // unanimated headline + actions bar (see the matching 1024px
-  // breakpoint in style.css).
-  var heroTrack = document.getElementById("hero-pin-track");
-  var heroPin = document.getElementById("hero-pin");
-  var heroCircle = document.getElementById("hero-circle");
+  // Hero video preview: autoplays muted, loops up to twice, then stops on
+  // the last frame. Clicking the video replays it (from the start once
+  // it has stopped); a separate button opens it in fullscreen.
+  var heroVideo = document.getElementById("hero-video");
 
-  if (heroTrack && heroPin && heroCircle) {
-    var HERO_CIRCLE_MIN = 300;
-    var HERO_CIRCLE_MAX_VW = 0.62;
-    var HERO_CIRCLE_MAX_CAP = 980;
-    var HERO_EXIT_END = 0.75; // blocks are fully gone by 75% of the scroll
-    var HERO_EXIT_X = 460;
-    var HERO_EXIT_Y = 170;
-    var HERO_EXIT_ROT = 11;
-    var HERO_BUTTON_START = 0.9; // last word holds, then the button appears
-    var HERO_WORD_SHIFT = 30;
-    var heroDesktopQuery = window.matchMedia("(min-width: 1025px)");
-    var heroWords = Array.prototype.slice.call(
-      heroCircle.querySelectorAll(".hero-circle__word")
-    );
-    var heroBtn = document.getElementById("hero-circle-btn");
-    var heroIntro = heroPin.querySelector(".hero__intro");
-    var heroHeadline = heroPin.querySelector(".hero__headline");
+  if (heroVideo) {
+    var HERO_VIDEO_MAX_LOOPS = 2;
+    var heroVideoLoops = 0;
 
-    var heroMaxSize = function () {
-      return Math.min(window.innerWidth * HERO_CIRCLE_MAX_VW, HERO_CIRCLE_MAX_CAP);
-    };
+    heroVideo.addEventListener("ended", function () {
+      heroVideoLoops += 1;
+      if (heroVideoLoops < HERO_VIDEO_MAX_LOOPS) {
+        heroVideo.currentTime = 0;
+        heroVideo.play();
+      }
+    });
 
-    var layoutHeroPin = function () {
-      var headerH = header.offsetHeight;
-      heroPin.style.top = headerH + "px";
-      heroPin.style.height = "calc(100vh - " + headerH + "px)";
-    };
-
-    // Words fade in, hold, and fade out one at a time as scroll progress
-    // (0–1) moves through the pin. Each word owns an equal slice of the
-    // range; a trapezoid envelope (fade in / hold / fade out) inside that
-    // slice means one word is always fully gone before the next appears.
-    // The last word ("Webseite?") is the exception: it fades in and then
-    // holds instead of fading out, and once the scroll nears the very end
-    // it slides up to make room for the "Na klar, Keule!" button below it.
-    var updateHeroWords = function (progress, size) {
-      heroCircle.style.setProperty("--hero-word-size", size * 0.16 + "px");
-
-      var count = heroWords.length;
-      var slice = 1 / count;
-      var active = Math.min(count - 1, Math.floor(progress * count));
-      var lastIndex = count - 1;
-
-      var buttonT = Math.min(
-        1,
-        Math.max(0, (progress - HERO_BUTTON_START) / (1 - HERO_BUTTON_START))
-      );
-
-      heroWords.forEach(function (word, i) {
-        var isLast = i === lastIndex;
-
-        if (isLast) {
-          word.style.transform = "translateY(" + -HERO_WORD_SHIFT * buttonT + "px)";
+    heroVideo.addEventListener("click", function () {
+      if (heroVideo.paused) {
+        if (heroVideo.ended) {
+          heroVideoLoops = 0;
+          heroVideo.currentTime = 0;
         }
-
-        if (i !== active) {
-          word.style.opacity = 0;
-          return;
-        }
-
-        var t = (progress - active * slice) / slice;
-        var opacity;
-        if (isLast) {
-          opacity = t < 0.25 ? t / 0.25 : 1; // fades in, then holds — no fade-out
-        } else if (t < 0.25) {
-          opacity = t / 0.25;
-        } else if (t > 0.75) {
-          opacity = (1 - t) / 0.25;
-        } else {
-          opacity = 1;
-        }
-        word.style.opacity = Math.min(1, Math.max(0, opacity));
-      });
-
-      if (heroBtn) {
-        heroBtn.style.opacity = buttonT;
-        heroBtn.style.transform = "translate(-50%, " + (14 - buttonT * 14) + "px)";
-        heroBtn.style.pointerEvents = buttonT > 0.6 ? "auto" : "none";
-        heroBtn.tabIndex = buttonT > 0.6 ? 0 : -1;
+        heroVideo.play();
+      } else {
+        heroVideo.pause();
       }
-    };
+    });
 
-    var resetHeroWords = function () {
-      heroWords.forEach(function (word) {
-        word.style.opacity = 0;
-        word.style.transform = "";
-      });
-      if (heroBtn) {
-        heroBtn.style.opacity = "";
-        heroBtn.style.transform = "";
-        heroBtn.style.pointerEvents = "";
-      }
-    };
-
-    // Headline (now on the left) slides diagonally down-left, intro block
-    // (now on the right) slides down-right — both away from the circle,
-    // both fading out — fully gone by HERO_EXIT_END so the circle owns the
-    // full stage for the last stretch of its growth.
-    var updateHeroBlocks = function (progress) {
-      var t = Math.min(1, progress / HERO_EXIT_END);
-      var opacity = 1 - t;
-
-      if (heroIntro) {
-        heroIntro.style.transform =
-          "translate(" + HERO_EXIT_X * t + "px, " + HERO_EXIT_Y * t + "px) rotate(" + HERO_EXIT_ROT * t + "deg)";
-        heroIntro.style.opacity = opacity;
-        heroIntro.style.pointerEvents = t >= 1 ? "none" : "";
-      }
-
-      if (heroHeadline) {
-        heroHeadline.style.transform =
-          "translate(" + -HERO_EXIT_X * t + "px, " + HERO_EXIT_Y * t + "px) rotate(" + -HERO_EXIT_ROT * t + "deg)";
-        heroHeadline.style.opacity = opacity;
-      }
-    };
-
-    var resetHeroBlocks = function () {
-      [heroIntro, heroHeadline].forEach(function (el) {
-        if (!el) return;
-        el.style.transform = "";
-        el.style.opacity = "";
-        el.style.pointerEvents = "";
-      });
-    };
-
-    var updateHeroCircle = function () {
-      var headerH = header.offsetHeight;
-      var pinnedHeight = window.innerHeight - headerH;
-      var scrollDistance = heroTrack.offsetHeight - pinnedHeight;
-      var rectTop = heroTrack.getBoundingClientRect().top - headerH;
-      var progress = scrollDistance > 0 ? -rectTop / scrollDistance : 0;
-      progress = Math.min(1, Math.max(0, progress));
-
-      // Grows evenly from its own center (the static translate(-50%, -50%)
-      // on .portrait__circle in CSS) — .hero__top clips its own overflow,
-      // so once the circle reaches that box's top or bottom edge, the
-      // excess simply disappears instead of pushing anything around.
-      var size = HERO_CIRCLE_MIN + (heroMaxSize() - HERO_CIRCLE_MIN) * progress;
-      heroCircle.style.width = size + "px";
-      heroCircle.style.height = size + "px";
-
-      updateHeroWords(progress, size);
-      updateHeroBlocks(progress);
-    };
-
-    var teardownHeroPin = function () {
-      heroPin.style.top = "";
-      heroPin.style.height = "";
-      heroCircle.style.width = "";
-      heroCircle.style.height = "";
-      heroCircle.style.removeProperty("--hero-word-size");
-      resetHeroWords();
-      resetHeroBlocks();
-    };
-
-    var refreshHeroPin = function () {
-      if (!heroDesktopQuery.matches) {
-        teardownHeroPin();
-        return;
-      }
-      if (prefersReducedMotion) {
-        // Keep the original static layout: no pin, no growth, headline and
-        // intro stay put and fully visible.
-        teardownHeroPin();
-        return;
-      }
-      layoutHeroPin();
-      updateHeroCircle();
-    };
-
-    window.addEventListener(
-      "scroll",
-      function () {
-        if (!heroDesktopQuery.matches || prefersReducedMotion) return;
-        window.requestAnimationFrame(updateHeroCircle);
-      },
-      { passive: true }
-    );
-
-    window.addEventListener("resize", refreshHeroPin);
-
-    if (heroDesktopQuery.addEventListener) {
-      heroDesktopQuery.addEventListener("change", refreshHeroPin);
-    } else {
-      heroDesktopQuery.addListener(refreshHeroPin);
+    if (!prefersReducedMotion) {
+      heroVideo.play().catch(function () {});
     }
 
-    refreshHeroPin();
+    var heroExpandBtn = document.getElementById("hero-video-expand");
+
+    if (heroExpandBtn) {
+      heroExpandBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (heroVideo.requestFullscreen) {
+          heroVideo.requestFullscreen();
+        } else if (heroVideo.webkitRequestFullscreen) {
+          heroVideo.webkitRequestFullscreen();
+        } else if (heroVideo.webkitEnterFullscreen) {
+          heroVideo.webkitEnterFullscreen();
+        }
+      });
+    }
   }
 
   // Process timeline: the center line fills in as the section scrolls

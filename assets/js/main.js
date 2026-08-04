@@ -178,7 +178,8 @@
       }
     };
 
-    // Intro block slides diagonally down-left, headline slides down-right,
+    // Headline (now on the left) slides diagonally down-left, intro block
+    // (now on the right) slides down-right — both away from the circle,
     // both fading out — fully gone by HERO_EXIT_END so the circle owns the
     // full stage for the last stretch of its growth.
     var updateHeroBlocks = function (progress) {
@@ -187,14 +188,14 @@
 
       if (heroIntro) {
         heroIntro.style.transform =
-          "translate(" + -HERO_EXIT_X * t + "px, " + HERO_EXIT_Y * t + "px) rotate(" + -HERO_EXIT_ROT * t + "deg)";
+          "translate(" + HERO_EXIT_X * t + "px, " + HERO_EXIT_Y * t + "px) rotate(" + HERO_EXIT_ROT * t + "deg)";
         heroIntro.style.opacity = opacity;
         heroIntro.style.pointerEvents = t >= 1 ? "none" : "";
       }
 
       if (heroHeadline) {
         heroHeadline.style.transform =
-          "translate(" + HERO_EXIT_X * t + "px, " + HERO_EXIT_Y * t + "px) rotate(" + HERO_EXIT_ROT * t + "deg)";
+          "translate(" + -HERO_EXIT_X * t + "px, " + HERO_EXIT_Y * t + "px) rotate(" + -HERO_EXIT_ROT * t + "deg)";
         heroHeadline.style.opacity = opacity;
       }
     };
@@ -271,6 +272,53 @@
     }
 
     refreshHeroPin();
+  }
+
+  // Process timeline: the center line fills in as the section scrolls
+  // through view. Desktop only — mobile keeps the plain stacked list.
+  var processList = document.getElementById("process-list");
+  var processFill = document.getElementById("process-line-fill");
+
+  if (processList && processFill) {
+    var processDesktopQuery = window.matchMedia("(min-width: 1025px)");
+
+    var updateProcessLine = function () {
+      var rect = processList.getBoundingClientRect();
+      var progress = (window.innerHeight * 0.75 - rect.top) / rect.height;
+      progress = Math.min(1, Math.max(0, progress));
+      processFill.style.height = progress * 100 + "%";
+    };
+
+    var refreshProcessLine = function () {
+      if (!processDesktopQuery.matches) {
+        processFill.style.height = "";
+        return;
+      }
+      if (prefersReducedMotion) {
+        processFill.style.height = "100%";
+        return;
+      }
+      updateProcessLine();
+    };
+
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!processDesktopQuery.matches || prefersReducedMotion) return;
+        window.requestAnimationFrame(updateProcessLine);
+      },
+      { passive: true }
+    );
+
+    window.addEventListener("resize", refreshProcessLine);
+
+    if (processDesktopQuery.addEventListener) {
+      processDesktopQuery.addEventListener("change", refreshProcessLine);
+    } else {
+      processDesktopQuery.addListener(refreshProcessLine);
+    }
+
+    refreshProcessLine();
   }
 
   // Contact form: send in-page via EmailJS, no page leave, with a success animation

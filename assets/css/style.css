@@ -461,16 +461,16 @@ h3 {
   min-height: 0;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 0.85fr 1fr 1.15fr;
+  grid-template-columns: 1.15fr 1fr 0.85fr;
   gap: var(--space-lg);
   align-items: center;
 }
 
 .hero__intro {
-  order: 1;
+  order: 3;
   position: relative;
   z-index: 2;
-  transform-origin: top left;
+  transform-origin: top right;
   will-change: transform, opacity;
 }
 
@@ -531,17 +531,24 @@ h3 {
 }
 
 .hero__headline {
-  order: 3;
+  order: 1;
   position: relative;
   z-index: 2;
-  transform-origin: top right;
+  transform-origin: top left;
   will-change: transform, opacity;
   font-family: var(--font-display);
   font-size: var(--step-hero);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 0.95;
-  text-align: right;
+  text-align: left;
+}
+
+/* A bit smaller than the shared --step-hero size, desktop only — the
+   mobile headline is a different element (.hero__headline--mobile) and
+   keeps the full size. */
+.hero__headline--desktop {
+  font-size: calc(var(--step-hero) * 0.82);
 }
 
 /* Mobile has its own headline text/wrapping; hidden by default, swapped
@@ -993,16 +1000,21 @@ h3 {
 .pricing-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-xl);
+  gap: var(--space-lg);
 }
 
 .price-col {
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md);
+  background: var(--paper-raised);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(21, 19, 15, 0.06);
 }
 
 .price-col--featured {
-  border-top: 1px solid var(--accent-orange);
+  border-color: var(--accent-orange);
 }
 
 .price-col__name {
@@ -1051,6 +1063,7 @@ h3 {
 
 .price-col__list {
   margin-top: var(--space-md);
+  margin-bottom: var(--space-lg);
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
@@ -1069,7 +1082,8 @@ h3 {
 }
 
 .price-col .btn {
-  margin-top: var(--space-lg);
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 /* ==========================================================================
@@ -1491,6 +1505,130 @@ h3 {
    Responsive
    ========================================================================== */
 
+@media (min-width: 1025px) {
+  .section-head {
+    max-width: 820px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .section-head .eyebrow {
+    justify-content: center;
+  }
+
+  .section-head .lede {
+    max-width: 60ch;
+    margin-inline: auto;
+  }
+
+  /* Forced line breaks in the section headlines are a mobile-wrapping
+     aid; on desktop the wider .section-head lets them wrap naturally. */
+  .section-head__break {
+    display: none;
+  }
+
+  .work-note {
+    max-width: 60ch;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  /* Each service becomes its own card instead of a hairline-divided
+     row, to make the individual services stand out more — still
+     stacked, just with visible edges. */
+  .service-row {
+    padding: var(--space-lg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--paper-raised);
+    box-shadow: 0 20px 40px rgba(21, 19, 15, 0.06);
+  }
+
+  .service-row + .service-row {
+    margin-top: var(--space-md);
+  }
+
+  /* Process timeline: a center spine that fills as you scroll, with
+     steps alternating left/right of it. .process-line__fill's height
+     is scroll-driven, set in main.js. */
+  .process-list {
+    position: relative;
+  }
+
+  .process-step {
+    position: relative;
+    display: block;
+    width: calc(50% - var(--space-lg));
+    padding-block: var(--space-sm);
+    border-top: none;
+  }
+
+  .process-step:last-child {
+    border-bottom: none;
+  }
+
+  .process-step:nth-child(odd) {
+    margin-right: auto;
+    text-align: right;
+  }
+
+  .process-step:nth-child(even) {
+    margin-left: auto;
+    text-align: left;
+  }
+
+  .process-step__num {
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .process-step__text {
+    max-width: 40ch;
+  }
+
+  .process-step:nth-child(odd) .process-step__text {
+    margin-left: auto;
+  }
+
+  .process-step::before {
+    content: "";
+    position: absolute;
+    top: 0.35rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--accent-orange);
+  }
+
+  .process-step:nth-child(odd)::before {
+    right: calc(-1 * var(--space-lg) - 5px);
+  }
+
+  .process-step:nth-child(even)::before {
+    left: calc(-1 * var(--space-lg) - 5px);
+  }
+
+  .process-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: var(--border);
+    transform: translateX(-50%);
+  }
+
+  .process-line__fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    background: var(--accent-orange);
+  }
+}
+
 @media (max-width: 1024px) {
   .work-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -1694,19 +1832,6 @@ h3 {
 
   .price-col__amount {
     font-size: 2.8rem;
-  }
-
-  /* Cards, matching .work-card, instead of hairline-divided rows. */
-  .price-col {
-    background: var(--paper-raised);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    box-shadow: 0 20px 40px rgba(21, 19, 15, 0.06);
-    padding: var(--space-md);
-  }
-
-  .price-col--featured {
-    border-color: var(--accent-orange);
   }
 
   .process-step {

@@ -1553,6 +1553,22 @@ h3 {
     text-align: center;
   }
 
+  /* Referenzen: headline fits on one line (needs more width than the
+     shared .section-head cap), and the rhythm around the intro text
+     matches .preise — tighter gap above it, wider gap to the cards. */
+  #referenzen .section-head {
+    max-width: none;
+  }
+
+  .section-head__nowrap {
+    white-space: nowrap;
+  }
+
+  #referenzen .work-note {
+    margin-top: -3.5rem;
+    margin-bottom: var(--space-lg);
+  }
+
   /* Each service becomes its own card instead of a hairline-divided
      row, to make the individual services stand out more — still
      stacked, just with visible edges. */

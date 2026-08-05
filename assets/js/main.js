@@ -4,10 +4,10 @@
   // EmailJS-Zugangsdaten aus dem EmailJS-Dashboard (siehe Setup-Anleitung).
   // Ohne echte Werte schlägt der Versand fehl und die Fehlermeldung im
   // Formular greift als Fallback (mailto-Link).
-  var EMAILJS_PUBLIC_KEY = "DEIN_PUBLIC_KEY";
-  var EMAILJS_SERVICE_ID = "DEIN_SERVICE_ID";
-  var EMAILJS_TEMPLATE_ADMIN = "DEIN_TEMPLATE_ID_BENACHRICHTIGUNG";
-  var EMAILJS_TEMPLATE_AUTOREPLY = "DEIN_TEMPLATE_ID_BESTAETIGUNG";
+  var EMAILJS_PUBLIC_KEY = "AK8eU4P9WDUAg2vki";
+  var EMAILJS_SERVICE_ID = "service_zg7fa6a";
+  var EMAILJS_TEMPLATE_ADMIN = "template_7ik3cs6";
+  var EMAILJS_TEMPLATE_AUTOREPLY = "template_ejixjjd";
 
   if (window.emailjs) {
     emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
